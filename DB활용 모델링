@@ -1,0 +1,214 @@
+```jsx
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import kr.co.green.DButil;
+import kr.co.green.DButil.*;
+import java.util.*;
+
+public class TestConn {
+
+	public static void main(String[] args) {
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		List<String> list = new ArrayList<>();
+		List<Integer> list2 = new ArrayList<>();
+
+		Scanner s = new Scanner(System.in);
+		boolean f = true;
+		while (f) {
+			System.out.println(
+					"도서 관리 프로그램 입니다 \n 1.책 추가하기 \n 2.책 전체 목록 \n 3.제목 검색 \n 4.id 검색 \n 5.책 삭제 \n 6.책 수정 \n 7.프로그램 종료");
+			int num = s.nextInt();
+
+			switch (num) {
+
+			case 1:
+				System.out.println("추가할 책 제목이랑 가격을 입력하라.");
+				String a = s.next();
+				int b = s.nextInt();
+
+				try {
+					conn = DButil.getConnection();
+					stmt = conn.createStatement();
+					int result = stmt.executeUpdate("INSERT INTO BOOKS (title, price) VALUES ('" + a + "'," + b + ");");
+
+					System.out.println(result + "권 추가 완료");
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					DButil.closeRS(rs);
+					DButil.closeStmt(stmt);
+					DButil.closeConn(conn);
+				}
+				break;
+
+			case 2:
+				try {
+					conn = DButil.getConnection();
+					stmt = conn.createStatement();
+					rs = stmt.executeQuery("SELECT * FROM books");
+
+					while (rs.next()) {
+						int id = rs.getInt("bookID");
+						String title = rs.getString("title");
+						int price = rs.getInt("price");
+
+						System.out.println("id : " + id + ", 제목 : " + title + ", 가격 :  " + price);
+					}
+
+				}
+
+				catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					DButil.closeRS(rs);
+					DButil.closeStmt(stmt);
+					DButil.closeConn(conn);
+				}
+				break;
+
+			case 3:
+
+				try {
+					conn = DButil.getConnection();
+					stmt = conn.createStatement();
+					rs = stmt.executeQuery("SELECT title FROM books");
+
+					while (rs.next()) {
+						String title = rs.getString("title");
+						list.add(title);
+					}
+
+					Iterator<String> iter = list.iterator();
+					System.out.println("검색할 책 제목 입력해라.");
+
+					String t = s.next();
+
+					while (iter.hasNext()) {
+						if (iter.next().equals(t)) {
+							conn = DButil.getConnection();
+							stmt = conn.createStatement();
+							rs = stmt.executeQuery("SELECT * FROM books where title = '" + t + "';");
+
+							while (rs.next()) {
+								int id = rs.getInt("bookID");
+								String title = rs.getString("title");
+								int price = rs.getInt("price");
+
+								System.out.println("id : " + id + ", 제목 : " + title + ", 가격 :  " + price);
+							}
+						}
+					}
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					DButil.closeRS(rs);
+					DButil.closeStmt(stmt);
+					DButil.closeConn(conn);
+				}
+				break;
+
+			case 4:
+				try {
+					conn = DButil.getConnection();
+					stmt = conn.createStatement();
+					rs = stmt.executeQuery("SELECT bookID FROM books");
+
+					while (rs.next()) {
+						int id = rs.getInt("bookID");
+						list2.add(id);
+					}
+
+					Iterator<Integer> iter = list2.iterator();
+					System.out.println("검색할 책 아이디 입력해라.");
+
+					int i = s.nextInt();
+
+					while (iter.hasNext()) {
+						if (iter.next() == (i)) {
+							conn = DButil.getConnection();
+							stmt = conn.createStatement();
+							rs = stmt.executeQuery("SELECT * FROM books where bookID = " + i + ";");
+
+							while (rs.next()) {
+								int id = rs.getInt("bookID");
+								String title = rs.getString("title");
+								int price = rs.getInt("price");
+
+								System.out.println("id : " + id + ", 제목 : " + title + ", 가격 :  " + price);
+							}
+						}
+					}
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					DButil.closeRS(rs);
+					DButil.closeStmt(stmt);
+					DButil.closeConn(conn);
+				}
+				break;
+
+			case 5:
+				System.out.println("삭제할 책 아이디 입력하라.(아이디 궁금하면 2번 눌려서 확인)");
+				int pp = s.nextInt();
+
+				try {
+					conn = DButil.getConnection();
+					stmt = conn.createStatement();
+					int result = stmt.executeUpdate("delete FROM books where bookID = " + pp + ";");
+
+					System.out.println(result + "권 삭제 완료");
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					DButil.closeRS(rs);
+					DButil.closeStmt(stmt);
+					DButil.closeConn(conn);
+				}
+				break;
+
+			case 6:
+				System.out.println("수정할 책 아이디 입력하라.(아이디 궁금하면 2번 눌려서 확인)");
+				int editId = s.nextInt();
+
+				try {
+					conn = DButil.getConnection();
+					stmt = conn.createStatement();
+					System.out.println("변경할 책의 새 제목과 새 가격을 입력하라.");
+					String newtitle = s.next();
+					int newprice = s.nextInt();
+					int result = stmt.executeUpdate("UPDATE books SET title = '" + newtitle + " ', price = " + newprice
+							+ "  where bookID = " + editId + ";");
+
+					System.out.println(result + "권 수정 완료");
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					DButil.closeRS(rs);
+					DButil.closeStmt(stmt);
+					DButil.closeConn(conn);
+				}
+				break;
+
+			case 7:
+				f = false;
+				break;
+
+			}
+		}
+
+	}
+}
+```
