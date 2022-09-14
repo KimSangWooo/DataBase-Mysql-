@@ -1,0 +1,77 @@
+mysql(데이터베이스) 자바 연동 코드
+
+실행 필요 환경 
+
+mysql jconnecter 설치 , 자바 프로젝트 폴더에 libs 폴더 생성 후 커넥터 삽입
+
+classpath libs 설정 적용
+
+jdbc 패키지 생성
+
+```jsx
+package jdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class ConnentEx {
+	public static void main(String[] args) {
+		
+		//연결 문자열
+		//jdbc:mysql://localhost:포트(3306)/데이터베이스/allowPUblicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul
+		String url = "jdbc:mysql://localhost:3306/workbench?allowPublicKeyRetrieval=true&false&serverTimezone=Asia/Seoul";
+		String id = "root";
+		String password = "000000"; // 비밀번호
+		Connection conn = null; // db에 접속
+		Statement stmt = null; // sql 명령어 실행
+		ResultSet rs = null; // select 명령어 실행
+
+		try { //예외 처리 필수
+			//mysql 드라이버 로딩
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			//db에 접속
+			conn = DriverManager.getConnection(url, id, password);
+			String sql = "select * from books"; // sql 명령어
+			stmt = conn.createStatement(); // sql 실행 객체
+			rs = stmt.executeQuery(sql); // 실행,결과셋의 시작주소를 rs에 전달
+			while (rs.next()) { // 읽어서 내용이 있으면 true, 없으면 false
+				// 결과셋 get.자료형("필드명")
+				int book_code = rs.getInt("book_code");
+				String title = rs.getString("title");
+				String author = rs.getString("author");
+				String year = rs.getString("year");
+				int price = rs.getInt("price");
+				System.out.println(book_code + "\t" + title + "\t" + author + "\t" + year + "\t" + price);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+
+	}
+}
+```
+
+%문자 = 특정 문자열 값을 찾을 때 사용 (자바의 contains와 유사)
+
+정수 형태의 값에선 연산자를 사용할 수 있음
