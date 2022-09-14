@@ -1,0 +1,88 @@
+스키마,데이터베이스,dp서버,my sQL
+
+서버 접속 순서 : cd 저장 장소, bin 
+
+데이터 보기 dir
+
+아이디(uroot) 패스워드 입력
+
+db 사용키워드 USE
+
+```jsx
+Microsoft Windows [Version 10.0.19044.1766]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Administrator>cd C:\Bitnami\wampstack-7.4.30-0\mariadb\bin
+
+C:\Bitnami\wampstack-7.4.30-0\mariadb\bin>dir
+ C 드라이브의 볼륨: main
+ 볼륨 일련 번호: 974F-1347
+
+ C:\Bitnami\wampstack-7.4.30-0\mariadb\bin 디렉터리
+```
+
+DB Server > DB or Shcema > table
+
+Structured Query Language (정돈된 쿼리 언어)
+
+관계형 데이터베이스 카테고리에 속하는 제품들이 공통적으로 db 서버를 제어할 때 사용하는 언어
+
+가성비가 아주 좋음.
+
+row : 행(수평) 데이터의 구조
+
+column : 열(수직) 데이터의 타입
+
+```jsx
+-> id INT(11) NOT NULL AUTO_INCREMENT,
+
+```
+
+id의 길이 = 11, 
+
+NULL 값을 허용하지 않는다.(반드시 써라)
+
+중복 제거
+
+table 생성 치트쉿
+
+```jsx
+CREATE TABLE test(
+    -> id INT NOT NULL AUTO_INCREMENT,
+    -> title VARCHAR(100) NOT NULL,
+    -> description TEXT NULL,
+    -> created DATE NOT NULL,
+    -> author VARCHAR(40) NULL,
+    -> profile VARCHAR(40) NULL,
+    -> PRIMARY KEY( id ) 
+    -> );
+```
+
+primary key : 해당 행의 대표 키워드.
+
+콜럼 값 설정하기 치트쉿 (CRUD) 중 C(reate)
+
+```jsx
+INSERT into test (title,description,created,author,profile) VALUES
+('MySQL','MySQL is ...',NOW(),'root','developer'); //콜럼과 value 반드시 매칭시키기
+```
+
+테이블 전체 보기
+
+MariaDB [tuto]> SELECT * FROM test;
+
+보고싶은 콜럼 값을 SELECT  와 FROM 사이에 적어둠
+
+```jsx
+SELECT id, title, created, author FROM test;
+```
+
+WHERE문 : FROM 뒤에 와야 함 (해당 컬럼의 값을 찾는 문법) 
+
+```jsx
+SELECT id, title, created, author FROM test WHERE author='liam';
+```
+
+ORDER BY (컬럼) DESC; 
+
+: 순서대로 정렬하기
