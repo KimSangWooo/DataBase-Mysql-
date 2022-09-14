@@ -1,0 +1,89 @@
+Create :
+
+```jsx
+CREATE TABLE test(
+    -> id INT NOT NULL AUTO_INCREMENT,
+    -> title VARCHAR(100) NOT NULL,
+    -> description TEXT NULL,
+    -> created DATE NOT NULL,
+    -> author VARCHAR(40) NULL,
+    -> profile VARCHAR(40) NULL,
+    -> PRIMARY KEY( id )
+    -> );
+```
+
+```jsx
+INSERT into test (title,description,created,author,profile) VALUES
+('MySQL','MySQL is ...',NOW(),'root','developer'); //콜럼과 value 반드시 매칭시키기
+```
+
+**************Read :
+
+(SELECT)문
+
+해당 콜럼 값을 SELECT 와 FROM 사이에 입력
+
+```jsx
+SELECT id, title, created, author FROM test;
+```
+
+WHERE문 : FROM 뒤에 와야 함 (해당 컬럼의 값을 찾는 문법)
+
+```jsx
+SELECT id, title, created, author FROM test WHERE author='liam';
+```
+
+ORDER BY (컬럼) DESC
+
+: 순서대로 정렬하기
+
+***********Update(수정)
+
+where 이라는 문구에 첫번째 컬럼값을 입력하고 이전에 컬럼과 수정 내용을 매칭시킨다.
+
+```jsx
+UPDATE test SET description='Oracle is popular', title='Oracle' WHERE id=2;
+```
+
+WHERE 문을 빠트리면 상당한 재앙이 찾아올 수 있음
+
+Delete  :
+
+```jsx
+DELETE FROM test WHERE id = 5; //id 가 5인 행 전체를 삭제함
+```
+
+관계형 데이터베이스의 필요성 : 중복이 있다면 개선할 필요가 있다는 증거. 
+
+중복의 문제점 : 중복되는 값이 막대한 데이터를 차지한다면 엄청난 어려움을 겪을 수 있다
+
+테이블 분리하기********************************************
+
+분산 저장,  합출력 (JOIN)
+
+```jsx
+MariaDB [tuto]> SELECT * FROM topic LEFT JOIN author ON topic.author_id = author.id;
+MariaDB [tuto]> SELECT topic.id, title, description, created, name, profile FROM topic LEFT JOIN author ON topic.author_id = author.id;
+```
+
+JOIN 문구와 함께 ON 문구를 사용하여 합침의 기준점을 정해준다.
+
+table 생성 시 modeling 적극 활용!.!
+
+backup 의 원리 : 데이터를 복제해서 보관함
+
+(mysql dump, binary log)
+
+Java mysql api : 자바와 데이터베이스를 연동시키는 프로그램
+
+ mysql server 안에  mysql monitor 가 있음 (gui 형태가 아닌, 명령어 형태), 어디서든 실행 할 수 있는 장점이 있다.  
+
+mysql workbench : gui 형태의 실행환경
+
+monitor 이든 workbench 이던 서버에 데이터를 전송함.
+
+합치기 
+
+```jsx
+SELECT * FROM mydb.books AS A inner join students AS B ON A.owner = B.number;
+```
