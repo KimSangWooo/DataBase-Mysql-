@@ -1,0 +1,258 @@
+RDBMS는 모든 데이터를 2차원 테이블 형태로 표현한다.
+
+장점 : 스키마에 맞춰 데이터를 관리하기 때문에 데이터의 정합성을 보장할 수 있다.
+단점 : 시스템이 커질 수록 쿼리가 복잡해지고 성능이 저하되며 Scale-out이 어렵다(Scale-up만 가능)
+NoSQL(Not Only SQL)은 RDBMS와 반대로 데이터간의 관계를 정의하지 않고, 스키마가 없어 좀 더 자유롭게 데이터를 관리할 수 있으며, 컬렉션이라는 형태로 데이터를 관리합니다.
+
+장점 : 스키마 없이 Key-Value 형태로 데이터를 관리해 자유롭게 데이터를 관리할 수 있다.
+데이터 분산이 용이하여 성능 향상을 위한 scale-up 뿐만아닌 scale-out 또한 가능하다.
+단점 : 데이터 중복이 발생할 수 있고, 중복된 데이터가 변경될 경우 수정을 모든 컬렉션에서 수행해야 한다.
+스키마가 존재하지 않기에 명확한 데이터 구조를 보장하지 않아 데이터 구조 결정이 어려울 수 있다. 
+
+
+트랜잭션은 작업의 완전성을 보장해준다.
+즉, 작업들을 모두 처리하거나 처리하지 못할 경우 이전 상태로 복구하여 작업의 일부만 적용되는 현상이 발생하지 않게 만들어주는 기능입니다.
+하나의 트랜잭션은 Commit(작업완료)되거나 Rollback(취소)됩니다.
+
+inner join 은 서로 연관된 내용만 검색하는 조인 방법입니다.
+
+A와 B에 대해 수행하는 것은, A와 B의 교집합을 말합니다. 벤다이어그램으로 그렸을 때 교차되는 부분입니다.
+
+ 
+
+outer join 은 한 쪽에는 데이터가 있고 한 쪽에는 데이터가 없는 경우, 데이터가 있는 쪽의 내용을 전부 출력하는 방법입니다.
+
+A와 B에 대해 수행하는 것은, A와 B의 합집합을 말합니다. 벤다이어그램으로 그렸을 때 합집합 부분입니다.
+
+outer join에는 LEFT OUTER JOIN, RIGHT OUTER JOIN, FULL OUTER JOIN이 있습니다.
+
+GROUP BY 는 GROUP BY 명령어를 통해 특정 컬럼을 기준으로 연산한 결과를 집계 키로 정의하여 그룹을 짓는 역할을 합니다.
+having은 그룹을 필터링 하는데 사용되고, where은 개별 행을 필터링하는데 사용됩니다.
+
+집합 연산자는 COUNT, SUM, AVG, MAX, MIN 등이 있고, DISTINCT와 같이 중복 데이터를 제거하는 특징이 있습니다.
+
+DELETE는 데이터는 지우지만 테이블 용량은 줄어들지 않고 원하는 데이터만 골라서 지울 수 있습니다. 삭제 후 되돌릴 수 있습니다.
+
+ 
+
+TRUNCATE는 전체 데이터를 한번에 삭제하는 방식입니다. 테이블 용량이 줄어들고 인덱스 등도 삭제되지만 테이블은 삭제할 수 없고,  삭제 후 되돌릴 수 없습니다.
+
+ 
+
+DROP은 테이블 자체를 완전히 삭제하는 방식(공간, 인덱스, 객체 모두 삭제)입니다. 삭제 후 되돌릴 수 없습니다.
+
+서버 접속 순서 : cd 저장 장소, bin 
+
+데이터 보기 dir
+
+아이디(uroot) 패스워드 입력
+
+db 사용키워드 USE
+
+```jsx
+Microsoft Windows [Version 10.0.19044.1766]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Administrator>cd C:\Bitnami\wampstack-7.4.30-0\mariadb\bin
+
+C:\Bitnami\wampstack-7.4.30-0\mariadb\bin>dir
+ C 드라이브의 볼륨: main
+ 볼륨 일련 번호: 974F-1347
+
+ C:\Bitnami\wampstack-7.4.30-0\mariadb\bin 디렉터리
+```
+
+DB Server > DB or Shcema > table
+
+Structured Query Language (정돈된 쿼리 언어)
+
+관계형 데이터베이스 카테고리에 속하는 제품들이 공통적으로 db 서버를 제어할 때 사용하는 언어
+
+가성비가 아주 좋음.
+
+row : 행(수평) 데이터의 구조
+
+column : 열(수직) 데이터의 타입
+
+```jsx
+-> id INT(11) NOT NULL AUTO_INCREMENT,
+
+```
+
+id의 길이 = 11, 
+
+NULL 값을 허용하지 않는다.(반드시 써라)
+
+중복 제거
+
+table 생성 치트쉿
+
+```jsx
+CREATE TABLE test(
+    -> id INT NOT NULL AUTO_INCREMENT,
+    -> title VARCHAR(100) NOT NULL,
+    -> description TEXT NULL,
+    -> created DATE NOT NULL,
+    -> author VARCHAR(40) NULL,
+    -> profile VARCHAR(40) NULL,
+    -> PRIMARY KEY( id ) 
+    -> );
+```
+
+primary key : 해당 행의 대표 키워드.
+
+콜럼 값 설정하기 치트쉿 (CRUD) 중 C(reate)
+
+```jsx
+INSERT into test (title,description,created,author,profile) VALUES
+('MySQL','MySQL is ...',NOW(),'root','developer'); //콜럼과 value 반드시 매칭시키기
+```
+
+테이블 전체 보기
+
+MariaDB [tuto]> SELECT * FROM test;
+
+보고싶은 콜럼 값을 SELECT  와 FROM 사이에 적어둠
+
+```jsx
+SELECT id, title, created, author FROM test;
+```
+
+WHERE문 : FROM 뒤에 와야 함 (해당 컬럼의 값을 찾는 문법) 
+
+```jsx
+SELECT id, title, created, author FROM test WHERE author='liam';
+```
+
+ORDER BY (컬럼) DESC; 
+
+: 순서대로 정렬하기\
+
+ROUND : 반올림 함수
+
+```jsx
+SELECT * FROM country WHERE name IN ('South Korea', 'Japan', 'China');
+
+SELECT * FROM country WHERE Population BETWEEN 100000000 AND 10000000000;
+
+SELECT * FROM country WHERE CONTINENT NOT IN ('North America', 'Europe', 'Asia') AND (GNP between 100 and 1000);
+
+SELECT Code AS '코드',SurfaceArea As '면적', HeadOfState As '대가리', Name, Population FROM country ;
+```
+
+여러 줄 생성하기
+
+```jsx
+INSERT INTO people (name, age) VALUES ('Bruce Lee', 40),
+ ('Conor Mcgregor',34), 
+('Pyotr Tchicovsky', 50 );
+```
+
+공백 제거하기
+
+```jsx
+SELECT RTRIM  = 우측공백 제거
+SELECT LTRIM = 좌측공백 제거
+```
+
+테이블 구조변경
+
+(외래키 생성)
+
+```jsx
+ALTER TABLE menu ADD CONSTRAINT foreign key (rID) references restaurant(rNumber);
+```
+
+서브쿼리(하나의 쿼리문 안에 다른 작업을 수행하는 sql 명령문) : 동적으로 값을 구하고자 할 때
+
+```jsx
+SELECT * FROM employees WHERE DEPARTMENT_ID IN (SELECT DEPARTMENT_ID FROM deparments
+ WHERE DEPARTMENT_NAME LIKE "IT%");
+
+SELECT * FROM employees WHERE SALARY = (
+SELECT SALARY FROM employees WHERE FIRST_NAME = "David" AND LAST_NAME = "Austin");
+```
+
+COUNT
+
+SUM
+
+AVG
+
+MAX
+
+MIN
+
+(해당하는 값을 구하는 읽는 명령어)
+
+```jsx
+SELECT COUNT(*) FROM employees WHERE PHONE_NUMBER LIKE "515%";
+
+SELECT COUNT(*) FROM employees;
+
+-- 각 직원들의 이름과 연봉, 평균연봉과의 차(평균연봉 - 연봉)를 조회 해 보세요
+-- 최고 연봉자와 최저 연봉직원들의 이름은 조회해보세요.
+-- 부서명이 IT 로 시작하는 직원들의 수 조회
+-- Douglas Grant의 이메일을  dog@naver.com 으로 변경하기
+
+SELECT * FROM departments;
+
+SELECT * FROM employees;
+
+SELECT FIRST_NAME, LAST_NAME, SALARY, SALARY-avg(SALARY) FROM employees;
+
+SELECT * FROM employees WHERE SALARY = (SELECT MAX(SALARY) FROM employees);
+
+SELECT * FROM employees WHERE SALARY = (SELECT MIN(SALARY) FROM employees);
+
+SELECT COUNT(*) FROM employees WHERE DEPARTMENT_ID IN (60, 21, 230);
+
+SELECT * FROM employees WHERE FIRST_NAME = "Douglas";
+
+UPDATE employees SET EMAIL = "dog@naver.com" WHERE EMPLOYEE_ID = 199;
+
+SELECT * FROM employees WHERE DEPARTMENT_ID = ( SELECT DEPARTMENT_ID FROM employees WHERE FIRST_NAME = "Ellen") ORDER BY SALARY DESC;
+
+SELECT * FROM employees WHERE SALARY >= (SELECT MAX(SALARY) FROM employees WHERE DEPARTMENT_ID IN (60, 21, 230)) ORDER BY SALARY DESC;
+```
+
+CREATE AS (복사) 시, 데이터 값은 그대로 오지만 index와 foreign key는 오지 않는다.
+
+having 메소드 : 가져온 그룹을 또 다시 분류하는 메소드
+
+```jsx
+select LAST_NAME from employees group by LAST_NAME having count(*) > 1;
+```
+
+단어 뒤집기, 단어 합치기, 문자열 대체, 문자열 자르기
+
+```jsx
+select reverse('qewr'); //뒤집기
+
+select concat('df', ' tkd'); // 합치기
+
+select replace('원본 문자열에서 변환합니다', '원본', '기존'); //대체
+
+select substring('employees', 5); //자르기
+```
+
+```jsx
+select floor(1.555); //내림
+select ceil(1.222) // 올림
+```
+
+```jsx
+//연도 다루기
+
+select adddate('1987-06-01', 40);
+
+select date_add('1987-06-01', interval 1 year);
+```
+
+```jsx
+select concat(first_name , last_name) AS 'flname', 
+phone_number, case when phone_number like "011%" then '개인전화' else '내선전화' end as '분류'
+ from employees;
+
+//조건문 처리
+```
